@@ -423,7 +423,7 @@ class APNsCertConnectionPool(APNsBaseConnectionPool):
         cert_file: str,
         topic: Optional[str] = None,
         max_connections: int = 10,
-        max_connection_attempts: int = 5,
+        max_connection_attempts: int = 1,
         use_sandbox: bool = False,
         no_cert_validation: bool = False,
         ssl_context: Optional[ssl.SSLContext] = None,
