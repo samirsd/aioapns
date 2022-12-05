@@ -377,43 +377,43 @@ class APNsBaseConnectionPool:
 
     async def send_notification(self, request):
         attempts = 0
-        while attempts < self.max_connection_attempts:
-            attempts += 1
-            logger.debug(
-                "Notification %s: waiting for connection",
-                request.notification_id,
-            )
-            try:
-                connection = await self.acquire()
-            except ConnectionError:
-                logger.warning(
-                    "Could not send notification %s: " "ConnectionError",
-                    request.notification_id,
-                )
-                await asyncio.sleep(1)
-                continue
-            logger.debug(
-                "Notification %s: connection %s acquired",
-                request.notification_id,
-                connection,
-            )
-            try:
-                response = await connection.send_notification(request)
-                return response
-            except NoAvailableStreamIDError:
-                connection.close()
-            except ConnectionClosed:
-                logger.warning(
-                    "Could not send notification %s: " "ConnectionClosed",
-                    request.notification_id,
-                )
-            except FlowControlError:
-                logger.debug(
-                    "Got FlowControlError for notification %s",
-                    request.notification_id,
-                )
-                await asyncio.sleep(1)
-        logger.error("Failed to send after %d attempts.", attempts)
+        # while attempts < self.max_connection_attempts:
+        #     attempts += 1
+        #     logger.debug(
+        #         "Notification %s: waiting for connection",
+        #         request.notification_id,
+        #     )
+        #     try:
+        #         connection = await self.acquire()
+        #     except ConnectionError:
+        #         logger.warning(
+        #             "Could not send notification %s: " "ConnectionError",
+        #             request.notification_id,
+        #         )
+        #         await asyncio.sleep(1)
+        #         continue
+        #     logger.debug(
+        #         "Notification %s: connection %s acquired",
+        #         request.notification_id,
+        #         connection,
+        #     )
+        #     try:
+        #         response = await connection.send_notification(request)
+        #         return response
+        #     except NoAvailableStreamIDError:
+        #         connection.close()
+        #     except ConnectionClosed:
+        #         logger.warning(
+        #             "Could not send notification %s: " "ConnectionClosed",
+        #             request.notification_id,
+        #         )
+        #     except FlowControlError:
+        #         logger.debug(
+        #             "Got FlowControlError for notification %s",
+        #             request.notification_id,
+        #         )
+        #         await asyncio.sleep(1)
+        # logger.error("Failed to send after %d attempts.", attempts)
         raise MaxAttemptsExceeded
 
 
